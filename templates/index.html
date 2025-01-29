@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FlaskAppForSubmittingForms</title>
+  <!-- Bootstrap CSS and JS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+  <!-- JQuery -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+  <style>
+    .container {
+        margin-top: 50px;
+    }
+    .field-group {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+    .field-group input {
+        flex: 1;
+        margin-right: 10px;
+    }
+
+    .data-item {
+        padding: 10px;
+        border-bottom: 1px solid #ddd;
+    }
+  </style>
+</head>
+<body>
+    <div class="container">
+        <div id="form-section">
+            <h2 class="mb-4">Data Form</h2>
+            <button type="button" id="switch-to-show-data" class="btn btn-info mb-3">Show saved data</button>
+            <form id="form-with-dynamic-inputs">
+                <div id="input-fields">
+                    <div class="field-group">
+                        <input type="text" name="field" class="form-control" placeholder="Enter value" required>
+                        <button type="button" class="btn btn-danger remove-field">Delete</button>
+                    </div>
+                </div>
+                <button type="button" id="add-field" class="btn btn-secondary mb-3">Add Field</button>
+                <br>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+
+        <div id="data-section" class="data-list mt-20" style="display: none;">
+            <h2 class="mb-4">Data list</h2>
+            <button type="button" id="back-to-form-button" class="btn btn-secondary mb-3">Back to Form</button>
+            <div id="data-container"></div>
+        </div>
+    </div>
+
+    <script>
+      $(document).ready(function() {
+          $('#add-field').click(function() {
+              const fieldHTML = `
+                  <div class="field-group">
+                      <input type="text" name="field" class="form-control" placeholder="Enter value" required>
+                      <button type="button" class="btn btn-danger remove-field">Delete</button>
+                  </div>
+              `;
+              $('#input-fields').append(fieldHTML);
+          });
+
+          $(document).on('click', '.remove-field', function() {
+              $(this).closest('.field-group').remove();
+          });
+
+          $('#form-with-dynamic-inputs').submit(function(e) {
+              e.preventDefault();
+              const formDataArray = $(this).serializeArray();
+              const formData = {};
+              formDataArray.forEach(item => {
+                  if (formData[item.name]) {
+                      if (Array.isArray(formData[item.name])) {
+                          formData[item.name].push(item.value);
+                      } else {
+                          formData[item.name] = [formData[item.name], item.value];
+                      }
+                  } else {
+                      formData[item.name] = item.value;
+                  }
+              });
+
+              $.ajax({
+                  url: '/submit',
+                  type: 'POST',
+                  contentType: 'application/json',
+                  data: JSON.stringify(formData),
+                  success: function(response) {
+                      alert(response.message);
+                      $('#form-with-dynamic-inputs')[0].reset();
+                      $('#input-fields').html(`
+                        <div class="field-group">
+                          <input type="text" name="field" class="form-control" placeholder="Enter value" required>
+                          <button type="button" class="btn btn-danger remove-field">Delete</button>
+                        </div>
+                      `);
+                  },
+                  error: function(xhr) {
+                      alert('An error occurred while saving data.');
+                  }
+              });
+          });
+
+          $('#switch-to-show-data').click(function() {
+              $.ajax({
+                  url: '/list',
+                  type: 'GET',
+                  success: function(response) {
+                      $('#form-section').hide();
+                      $('#data-section').show();
+                      $('#data-container').empty();
+                      if (response.data.length === 0) {
+                          $('#data-container').append('<p>No data available.</p>');
+                      } else {
+                          response.data.forEach(item => {
+                              const dataHTML = `
+                                <div class="data-item">
+                                  <strong>ID:</strong> ${item.id} <br>
+                                  <strong>Data:</strong>${JSON.stringify(item.data)}
+                                </div>
+                              `;
+                              $('#data-container').append(dataHTML);
+                          });
+                      }
+                  },
+                  error: function(xhr) {
+                      alert('An error occurred while fetching data.');
+                  }
+              });
+          });
+
+          $('#back-to-form-button').click(function(){
+              $('#data-section').hide();
+              $('#form-section').show();
+          });
+      });
+    </script>
+</body>
+</html>
