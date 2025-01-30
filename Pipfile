@@ -10,8 +10,8 @@ sqlalchemy = "*"
 psycopg2-binary = "*"
 flask-sqlalchemy = "*"
 flask-cors = "*"
-flask-wtf = "*"
 python-dotenv = "*"
+jinja2 = "*"
 
 [dev-packages]
 
