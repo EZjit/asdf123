@@ -81,8 +81,4 @@ sudo ufw allow 'Nginx Full'
 ```bash
 gunicorn --config gunicorn-config.py wsgi:app
 ```
-8) Приложение будет работать через Nginx локально на 80 порту:
-http://localhost:80
-
-Также можно постучаться напрямую в gunicorn сервер через 8000 порт:
-http://localhost:8000
+8) Приложение будет работать через Nginx локально на 80 порту: http://localhost:80. Также можно постучаться напрямую в gunicorn сервер через 8000 порт: http://localhost:8000
