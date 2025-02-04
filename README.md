@@ -43,7 +43,7 @@ https://git-scm.com/downloads/linux
 1) Скопируйте проект из Github репозитория и перейдите в директорию проекта:
 ```bash
 git clone https://github.com/EZjit/asdf123.git
-cd <путь к проетку>
+cd <путь к проекту>
 ```
 2) Создайте и запустите виртуальное окружение:
 ```bash
@@ -55,7 +55,7 @@ source deployenv/bin/activate
 pip install --upgrade pip
 pip install -r requirements.txt
 ```
-4) Создайте и сконфигурируйте базу данных PostgreSQL:
+4) Создайте и сконфигурируйте базу данных PostgreSQL. Если сделать все так, как указано в данном пункте, не придется изменять конфиги базы данных:
 ```bash
 sudo -u postgres psql
 
