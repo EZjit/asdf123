@@ -1,9 +1,13 @@
 import os
 
+NUM_CORES = os.cpu_count()
+NUM_WORKERS = NUM_CORES * 2 + 1
+NUM_THREADS = NUM_WORKERS * 2
 
-workers = int(os.environ.get('GUNICORN_PROCESSES', '2'))
 
-threads = int(os.environ.get('GUNICORN_THREADS', '4'))
+workers = int(os.environ.get('GUNICORN_PROCESSES', str(NUM_WORKERS)))
+
+threads = int(os.environ.get('GUNICORN_THREADS', str(NUM_THREADS)))
 
 # timeout = int(os.environ.get('GUNICORN_TIMEOUT', '120'))
 
