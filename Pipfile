@@ -11,6 +11,7 @@ psycopg2-binary = "*"
 flask-sqlalchemy = "*"
 flask-cors = "*"
 python-dotenv = "*"
+jinja2 = "*"
 
 [dev-packages]
 
