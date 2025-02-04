@@ -11,5 +11,5 @@ class FormDataSavedAsJson(db.Model):
     def to_dict(self):
         return {
             'id': self.id,
-            'data': self.data
+            'data': self.data,
         }
