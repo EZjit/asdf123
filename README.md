@@ -84,7 +84,7 @@ sudo systemctl restart nginx
 sudo ufw delete allow 5000
 sudo ufw allow 'Nginx Full'
 ```
-7) Запустите приложение:
+7) Запустите приложение (из корневой директории проекта):
 ```bash
 gunicorn --config gunicorn-config.py wsgi:app
 ```
