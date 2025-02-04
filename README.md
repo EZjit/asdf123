@@ -11,7 +11,7 @@
 ```bash
 pg_config --version
 ```
- Если, не установлена, ее необходимо установить:
+Если не установлена, ее необходимо установить:
 https://www.postgresql.org/download/linux/ubuntu/
 
 3) Убедитесь, что у Вас установлен сервер Nginx:
@@ -32,11 +32,18 @@ https://realpython.com/installing-python/#linux-how-to-build-python-from-source-
 ```bash
 python -m ensurepip --upgrade
 ```
+6) Убидитесь, что у Вас установлен Git:
+```bash
+git --version
+```
+Если не установлен, установите:
+https://git-scm.com/downloads/linux
 
 #### Устанавливаем и запускаем проект
-1) Скопируйте проект из Github репозитория:
+1) Скопируйте проект из Github репозитория и перейдите в директорию проекта:
 ```bash
 git clone https://github.com/EZjit/asdf123.git
+cd <путь к проетку>
 ```
 2) Создайте и запустите виртуальное окружение:
 ```bash
@@ -61,7 +68,7 @@ ALTER DATABASE flask_db OWNER TO flask_user;
 ```
 5) Скопируйте конфигурацию приложения в директорию с конфигами Nginx:
 ```bash
-cd /<путь к проекту (локально)>
+cd <путь к проекту (локально)>
 cp nginx/asdf123 /etc/nginx/sites-available
 ```
 и создайте символьную ссылку на данный конфиг:
